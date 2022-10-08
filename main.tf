@@ -11,12 +11,12 @@ terraform {
 provider "outscale" {}
 
 resource "outscale_keypair" "keypair01" {
-    keypair_name = "hackathon-hippo2"
+    keypair_name = "hackathon"
 }
 
 # SG common for all VMs
 resource "outscale_security_group" "hackathon_common" {
-    security_group_name = "hackathon-common-hippo2"
+    security_group_name = "hackathon-common"
 }
 
 resource "outscale_security_group_rule" "hackathon_ssh" {
@@ -43,7 +43,7 @@ resource "outscale_security_group_rule" "hackathon_vscode" {
 
 # SG common for all VMs
 resource "outscale_security_group" "hackathon_web" {
-    security_group_name = "hackathon-web-hippo2"
+    security_group_name = "hackathon-web"
 }
 
 resource "outscale_security_group_rule" "hackathon_web" {
@@ -57,38 +57,9 @@ resource "outscale_security_group_rule" "hackathon_web" {
   }
 }
 
-# SG MongoDB
-resource "outscale_security_group" "hackathon_mongodb" {
-    security_group_name = "hackathon-mongodb-hippo2"
-}
-
-# SG MondoDB rule
-resource "outscale_security_group_rule" "hackathon_mongodb" {
-  flow              = "Inbound"
-  security_group_id = outscale_security_group.hackathon_mongodb.id
-  rules {
-    from_port_range = "27017"
-    to_port_range   = "27017"
-    ip_protocol     = "tcp"
-    ip_ranges       = ["0.0.0.0/0"]
-  }
-}
-
-# SG MondoDB rule
-resource "outscale_security_group_rule" "hackathon_mongo_express" {
-  flow              = "Inbound"
-  security_group_id = outscale_security_group.hackathon_mongodb.id
-  rules {
-    from_port_range = "8081"
-    to_port_range   = "8081"
-    ip_protocol     = "tcp"
-    ip_ranges       = ["0.0.0.0/0"]
-  }
-}
-
 # SG Postgres
 resource "outscale_security_group" "hackathon_postgre" {
-    security_group_name = "hackathon-postgres-hippo2"
+    security_group_name = "hackathon-postgres"
 }
 
 # SG Postgres rule
@@ -125,7 +96,7 @@ resource "outscale_vm" "hackathon_db1" {
   image_id      = "ami-bb490c7e"
   vm_type       = "tinav5.c2r2p3"
   keypair_name  = "${outscale_keypair.keypair01.keypair_name}"
-  security_group_ids = [outscale_security_group.hackathon_common.security_group_id, outscale_security_group.hackathon_postgre.security_group_id, outscale_security_group.hackathon_mongodb.security_group_id]
+  security_group_ids = [outscale_security_group.hackathon_common.security_group_id, outscale_security_group.hackathon_postgre.security_group_id]
   tags {
     key   = "name"
     value = "hackathon_db1"
