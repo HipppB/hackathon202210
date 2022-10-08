@@ -11,12 +11,12 @@ terraform {
 provider "outscale" {}
 
 resource "outscale_keypair" "keypair01" {
-    keypair_name = "hackathon"
+    keypair_name = "hackathon-hippo2"
 }
 
 # SG common for all VMs
 resource "outscale_security_group" "hackathon_common" {
-    security_group_name = "hackathon-common"
+    security_group_name = "hackathon-common-hippo2"
 }
 
 resource "outscale_security_group_rule" "hackathon_ssh" {
@@ -43,7 +43,7 @@ resource "outscale_security_group_rule" "hackathon_vscode" {
 
 # SG common for all VMs
 resource "outscale_security_group" "hackathon_web" {
-    security_group_name = "hackathon-web"
+    security_group_name = "hackathon-web-hippo2"
 }
 
 resource "outscale_security_group_rule" "hackathon_web" {
@@ -59,7 +59,7 @@ resource "outscale_security_group_rule" "hackathon_web" {
 
 # SG MongoDB
 resource "outscale_security_group" "hackathon_mongodb" {
-    security_group_name = "hackathon-mongodb"
+    security_group_name = "hackathon-mongodb-hippo2"
 }
 
 # SG MondoDB rule
@@ -88,7 +88,7 @@ resource "outscale_security_group_rule" "hackathon_mongo_express" {
 
 # SG Postgres
 resource "outscale_security_group" "hackathon_postgre" {
-    security_group_name = "hackathon-postgres"
+    security_group_name = "hackathon-postgres-hippo2"
 }
 
 # SG Postgres rule
@@ -123,7 +123,7 @@ resource "outscale_security_group_rule" "hackathon_adminer" {
 #   p1 - performance. Possible values: [1,2,3], where 1 is highest
 resource "outscale_vm" "hackathon_db1" {
   image_id      = "ami-bb490c7e"
-  vm_type       = "tinav5.c4r8p1"
+  vm_type       = "tinav5.c2r2p3"
   keypair_name  = "${outscale_keypair.keypair01.keypair_name}"
   security_group_ids = [outscale_security_group.hackathon_common.security_group_id, outscale_security_group.hackathon_postgre.security_group_id, outscale_security_group.hackathon_mongodb.security_group_id]
   tags {
@@ -216,7 +216,7 @@ resource "outscale_vm" "hackathon_db1" {
 
 resource "outscale_vm" "hackathon_ms1" {
   image_id      = "ami-bb490c7e"
-  vm_type       = "tinav5.c4r8p1"
+  vm_type       = "tinav5.c1r2p3"
   keypair_name  = "${outscale_keypair.keypair01.keypair_name}"
   security_group_ids = [outscale_security_group.hackathon_common.security_group_id,outscale_security_group.hackathon_web.security_group_id]
   tags {
@@ -326,7 +326,7 @@ resource "outscale_vm" "hackathon_ms1" {
 
 resource "outscale_vm" "hackathon_app1" {
   image_id      = "ami-bb490c7e"
-  vm_type       = "tinav5.c4r8p1"
+  vm_type       = "tinav5.c1r3p3"
   keypair_name  = "${outscale_keypair.keypair01.keypair_name}"
   security_group_ids = [outscale_security_group.hackathon_common.security_group_id]
   tags {
@@ -468,5 +468,3 @@ EOT
     command = "rm -f app1_connect.sh"
   }
 }
-
-
